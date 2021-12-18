@@ -1,4 +1,4 @@
-package edu.strongsubgroup.agreement.configuration;
+package edu.akorzh.survey.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

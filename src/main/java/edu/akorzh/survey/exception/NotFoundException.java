@@ -1,4 +1,4 @@
-package edu.strongsubgroup.salary.exception;
+package edu.akorzh.survey.exception;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException() {

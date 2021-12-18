@@ -1,4 +1,4 @@
-package edu.strongsubgroup.agreement.configuration;
+package edu.akorzh.survey.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfiguration {
 
-    private static final String BASE_PACKAGE_SWAGGER = "edu.strongsubgroup.agreement.api";
+    private static final String BASE_PACKAGE_SWAGGER = "edu.akorzh.survey.api";
 
     @Bean
     public Docket api() {

@@ -1,0 +1,24 @@
+logging:
+  level:
+    com.perspective.calculation: "${LOG_LEVEL:INFO}"
+    org.springframework: WARN
+  file:
+    name: target/log/application.log
+datasource:
+  db-agreement:
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: "${SURVEY_DATASOURCE_URL}"
+      username: "${SURVEY_DATASOURCE_USERNAME}"
+      password: "${SURVEY_DATASOURCE_PASSWORD}"
+      connection-timeout: 60000
+      maximum-pool-size: 5
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db.changelog-master.xml
+    drop-first: false
+server:
+  port: 8081
+frontend:
+  host: "${SURVEY_FRONTEND_URL}"

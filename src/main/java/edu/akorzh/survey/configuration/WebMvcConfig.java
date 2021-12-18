@@ -1,4 +1,4 @@
-package edu.strongsubgroup.agreement.configuration;
+package edu.akorzh.survey.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.kaczmarzyk.spring.data.jpa.web.SpecificationArgumentResolver;

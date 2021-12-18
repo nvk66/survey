@@ -1,4 +1,4 @@
-package edu.strongsubgroup.salary.api.exception;
+package edu.akorzh.survey.api.exception;
 
 import lombok.Builder;
 import lombok.Getter;

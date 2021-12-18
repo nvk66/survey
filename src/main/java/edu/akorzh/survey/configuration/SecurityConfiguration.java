@@ -1,8 +1,8 @@
-package edu.strongsubgroup.agreement.configuration;
+package edu.akorzh.survey.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.strongsubgroup.agreement.filter.CustomAuthenticationFilter;
-import edu.strongsubgroup.agreement.filter.CustomAuthorizationFilter;
+import edu.akorzh.survey.filter.CustomAuthenticationFilter;
+import edu.akorzh.survey.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -27,6 +29,11 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true
+)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final String LOGIN_URL = "/api/login";
@@ -49,6 +56,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 new CustomAuthenticationFilter(authenticationManagerBean(), objectMapper);
         http.cors();
         http.csrf().disable();
+
+        http.exceptionHandling()
+                .authenticationEntryPoint((request, response, ex) ->
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage()));
+
         customAuthenticationFilter.setFilterProcessesUrl(LOGIN_URL);
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers(LOGIN_URL).permitAll();

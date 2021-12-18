@@ -1,4 +1,4 @@
-package edu.strongsubgroup.agreement.filter;
+package edu.akorzh.survey.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

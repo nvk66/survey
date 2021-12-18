@@ -1,7 +1,7 @@
-package edu.strongsubgroup.agreement.repository;
+package edu.akorzh.survey.repository;
 
-import edu.strongsubgroup.agreement.common.UserRoles;
-import edu.strongsubgroup.agreement.model.Role;
+import edu.akorzh.survey.common.UserRoles;
+import edu.akorzh.survey.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

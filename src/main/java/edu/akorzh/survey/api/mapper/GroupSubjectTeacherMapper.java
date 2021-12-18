@@ -1,2 +1,7 @@
-package edu.akorzh.survey.api.mapper;public class GroupSubjectTeacherMapper {
+package edu.akorzh.survey.api.mapper;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class GroupSubjectTeacherMapper {
 }

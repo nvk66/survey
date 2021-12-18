@@ -1,6 +1,6 @@
-package edu.strongsubgroup.salary.api.exception;
+package edu.akorzh.survey.api.exception;
 
-import edu.strongsubgroup.salary.exception.NotFoundException;
+import edu.akorzh.survey.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +33,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return getResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "exception.internal.server", ex);
     }
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler({NotFoundException.class})
     public final ResponseEntity<ApiError> handleNotFoundException(final NotFoundException ex) {
         return getResponseEntity(HttpStatus.NOT_FOUND, "exception.not.found", ex);
     }
