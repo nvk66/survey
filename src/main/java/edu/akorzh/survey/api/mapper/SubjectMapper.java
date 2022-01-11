@@ -9,8 +9,8 @@ public class SubjectMapper {
 
     public SubjectDto to(Subject subject) {
         return SubjectDto.builder()
+                .id(subject.getId())
                 .name(subject.getName())
-                .hours(subject.getName())
                 .ratingType(subject.getRatingType())
                 .build();
     }
@@ -18,7 +18,6 @@ public class SubjectMapper {
     public Subject to(SubjectDto subject) {
         return Subject.builder()
                 .name(subject.getName())
-                .hours(subject.getName())
                 .ratingType(subject.getRatingType())
                 .build();
     }

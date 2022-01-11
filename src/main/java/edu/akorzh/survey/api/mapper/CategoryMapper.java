@@ -21,7 +21,7 @@ public class CategoryMapper {
     public Category to(CategoryDto category) {
         return Category.builder()
                 .name(category.getName())
-                .common(category.getCommon())
+                .common(Boolean.FALSE)
                 .build();
     }
 

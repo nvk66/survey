@@ -9,4 +9,8 @@ public interface CategoryService {
     Category add(Category category, Long surveyId);
 
     Set<String> findAllPublic();
+
+    List<Category> getBySurvey(Long id);
+
+    Category get(Long categoryId);
 }

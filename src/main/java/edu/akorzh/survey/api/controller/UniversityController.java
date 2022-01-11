@@ -7,10 +7,10 @@ import edu.akorzh.survey.service.UniversityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -25,6 +25,16 @@ public class UniversityController {
     public UniversityDto add(@Validated @RequestBody UniversityDto universityDto) {
         final University university = universityService.add(universityMapper.to(universityDto));
         return universityMapper.to(university);
+    }
+
+    @GetMapping("/")
+    public List<UniversityDto> get() {
+        return universityService.get().stream().map(universityMapper::to).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{guid}")
+    public UniversityDto get(@PathVariable(value = "guid") String guid) {
+        return universityMapper.to(universityService.get(guid));
     }
 
 }

@@ -14,8 +14,12 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionDto {
 
+    private Long id;
+
     private String name;
 
     private AnswerType type;
+
+    private Long categoryId;
 
 }

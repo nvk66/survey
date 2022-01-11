@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Builder
 
 @Entity
-@Table(name = "group_subject_teacher")
-public class GroupSubjectTeacherLink extends AbstractEntity<Long> {
+@Table(name = "course")
+public class Course extends AbstractEntity<Long> {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "group_id")
@@ -33,5 +33,8 @@ public class GroupSubjectTeacherLink extends AbstractEntity<Long> {
 
     @Column(name = "till")
     private LocalDate till;
+
+    @Column(name = "hours")
+    private Long hours;
 
 }

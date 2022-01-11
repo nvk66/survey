@@ -10,6 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Log4j2
 @RequiredArgsConstructor
 @RestController
@@ -28,6 +31,11 @@ public class TeacherController {
         final Teacher teacher =
                 teacherService.add(teacherMapper.to(teacherDto), universityId, authentication.getName());
         return teacherMapper.to(teacher);
+    }
+
+    @GetMapping("/{universityId}/")
+    public List<TeacherDto> get(@PathVariable(value = "universityId") Long universityId) {
+        return teacherService.get(universityId).stream().map(teacherMapper::to).collect(Collectors.toList());
     }
 
 }

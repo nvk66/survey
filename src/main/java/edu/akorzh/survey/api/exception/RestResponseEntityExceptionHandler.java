@@ -1,5 +1,6 @@
 package edu.akorzh.survey.api.exception;
 
+import edu.akorzh.survey.exception.ActionNotAvailableException;
 import edu.akorzh.survey.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({NotFoundException.class})
     public final ResponseEntity<ApiError> handleNotFoundException(final NotFoundException ex) {
         return getResponseEntity(HttpStatus.NOT_FOUND, "exception.not.found", ex);
+    }
+
+    @ExceptionHandler({ActionNotAvailableException.class})
+    public final ResponseEntity<ApiError> handleActionNotAvailableException(final ActionNotAvailableException ex) {
+        return getResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
     }
 
     @Override

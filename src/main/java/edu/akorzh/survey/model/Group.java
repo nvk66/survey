@@ -33,5 +33,5 @@ public class Group extends AbstractEntity<Long> {
     private University university;
 
     @OneToMany(mappedBy = "group", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<GroupSubjectTeacherLink> groupSubjectTeacherLinks = new HashSet<>(0);
+    private Set<Course> courses = new HashSet<>(0);
 }

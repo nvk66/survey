@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubjectDto {
 
-    private String name;
+    private Long id;
 
-    private String hours;
+    private String name;
 
     private RatingType ratingType;
 

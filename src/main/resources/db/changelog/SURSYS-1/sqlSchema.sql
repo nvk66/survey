@@ -59,8 +59,8 @@ create table if not exists university
 create table if not exists groups
 (
     id            int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
-    name          varchar(256)                                         not null unique,
-    guid          varchar(64)                                          not null unique,
+    name          varchar(256)                                         not null,
+    guid          varchar(64)                                          not null,
     year          varchar(4)                                           not null,
     university_id int8                                                 not null,
     constraint group_university_ibfk_1 foreign key (university_id) references university (id),
@@ -73,9 +73,8 @@ create table if not exists groups
 create table if not exists subject
 (
     id            int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
-    name          varchar(256)                                         not null unique,
-    hours         numeric(4)                                           not null unique,
-    rate_type     varchar(32)                                          not null unique,
+    name          varchar(256)                                         not null,
+    rate_type     varchar(32)                                          not null,
     university_id int8                                                 not null,
     constraint group_university_ibfk_1 foreign key (university_id) references university (id),
     unique (name, rate_type, university_id)
@@ -113,8 +112,8 @@ create table if not exists teacher
 --rollback drop table teacher;
 --comment: Создана таблица teacher
 
---changeset akorzh:group_subject_teacher_link
-create table if not exists group_subject_teacher
+--changeset akorzh:course
+create table if not exists course
 (
     id         int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
     group_id   int8                                                 not null,
@@ -122,13 +121,14 @@ create table if not exists group_subject_teacher
     teacher_id int8                                                 not null,
     since      timestamp                                            not null,
     till       timestamp                                            not null,
+    hours      numeric(4)                                           not null,
     constraint group_subject_teacher_ibfk_1 foreign key (group_id) references groups (id),
     constraint group_subject_teacher_ibfk_2 foreign key (subject_id) references subject (id),
     constraint group_subject_teacher_ibfk_3 foreign key (teacher_id) references teacher (id),
     unique (subject_id, group_id, teacher_id, since, till)
 );
---rollback drop table group_subject_teacher;
---comment: Создана таблица group_subject_teacher
+--rollback drop table course;
+--comment: Создана таблица course
 
 --changeset akorzh:survey
 create table if not exists survey
@@ -149,9 +149,9 @@ create table if not exists survey
 create table if not exists survey_permission
 (
     survey_id                int8 not null,
-    group_subject_teacher_id int8 not null,
+    course_id int8 not null,
     constraint survey_permission_ibfk_1 foreign key (survey_id) references survey (id),
-    constraint survey_permission_ibfk_2 foreign key (survey_id) references group_subject_teacher (id)
+    constraint survey_permission_ibfk_2 foreign key (course_id) references course (id)
 );
 --rollback drop table survey_permission;
 --comment: Создана таблица survey_permission
@@ -203,6 +203,4 @@ INSERT INTO roles (name)
 VALUES ('ROLE_UNIVERSITY_ADMINISTRATOR'),
        ('ROLE_ADMINISTRATOR'),
        ('ROLE_USER');
-
-
 

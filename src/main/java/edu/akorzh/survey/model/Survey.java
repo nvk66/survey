@@ -17,6 +17,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "survey")
+@ToString
 public class Survey extends AbstractEntity<Long> {
 
     @Column(name = "name")
@@ -42,7 +43,7 @@ public class Survey extends AbstractEntity<Long> {
     @ManyToMany
     @JoinTable(name = "survey_subject",
             joinColumns = {@JoinColumn(name = "survey_id")},
-            inverseJoinColumns = {@JoinColumn(name = "group_subject_teacher_id")})
-    private Set<GroupSubjectTeacherLink> groupSubjectTeacherLinks = new HashSet<>(0);
+            inverseJoinColumns = {@JoinColumn(name = "course_id")})
+    private Set<Course> courses = new HashSet<>(0);
 
 }

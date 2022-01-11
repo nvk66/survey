@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class TeacherDto {
 
+    private Long id;
+
     private Grade grade;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -21,5 +23,11 @@ public class TeacherDto {
 
     @JsonIgnore
     private Boolean submitted;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String patronymic;
 
 }

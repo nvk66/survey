@@ -4,6 +4,8 @@ import edu.akorzh.survey.common.AnswerType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -14,9 +16,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "question")
+@ToString
 public class Question extends AbstractEntity<Long> {
 
-    @Column(name = "type")
+    @Column(name = "answer_type")
     @Enumerated(value = EnumType.STRING)
     private AnswerType type;
 
@@ -30,5 +33,8 @@ public class Question extends AbstractEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "survey_id")
     private Survey survey;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    private List<Answer> answers = new ArrayList<>(0);
 
 }

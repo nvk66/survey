@@ -9,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Log4j2
 @RequiredArgsConstructor
 @Service
@@ -18,7 +20,7 @@ public class SubjectServiceImpl implements SubjectService {
     private final UniversityRepository universityRepository;
     private final GroupRepository groupRepository;
     private final TeacherRepository teacherRepository;
-    private final GroupSubjectTeacherLinkRepository groupSubjectTeacherLinkRepository;
+    private final CourseRepository courseRepository;
 
     @Override
     @Transactional
@@ -31,20 +33,24 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public void addSubjectToGroup(Long groupId,
-                                  Long subjectId,
-                                  Long teacherId,
-                                  GroupSubjectTeacherLink groupSubjectTeacherLink) {
+    public void addSubjectToGroup(Long groupId, Long subjectId, Long teacherId, Course course) {
 
         Group group = groupRepository.findById(groupId).orElseThrow(NotFoundException::new);
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(NotFoundException::new);
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(NotFoundException::new);
 
-        groupSubjectTeacherLink.setGroup(group);
-        groupSubjectTeacherLink.setSubject(subject);
-        groupSubjectTeacherLink.setTeacher(teacher);
+        course.setGroup(group);
+        course.setSubject(subject);
+        course.setTeacher(teacher);
 
-        groupSubjectTeacherLinkRepository.save(groupSubjectTeacherLink);
+        courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
+    public List<Subject> get(Long universityId) {
+        return subjectRepository.findAllByUniversity(
+                universityRepository.findById(universityId).orElseThrow(NotFoundException::new));
     }
 
 }

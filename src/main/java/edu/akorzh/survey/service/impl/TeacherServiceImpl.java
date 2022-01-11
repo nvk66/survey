@@ -12,6 +12,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Log4j2
 @RequiredArgsConstructor
 @Service
@@ -33,6 +35,13 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setUser(user);
         teacherRepository.save(teacher);
         return teacher;
+    }
+
+    @Override
+    @Transactional
+    public List<Teacher> get(Long universityId) {
+        return teacherRepository.findAllByUniversity(
+                universityRepository.findById(universityId).orElseThrow(NotFoundException::new));
     }
 
 

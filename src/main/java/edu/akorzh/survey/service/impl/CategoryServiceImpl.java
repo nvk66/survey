@@ -40,4 +40,14 @@ public class CategoryServiceImpl implements CategoryService {
     public Set<String> findAllPublic() {
         return categoryRepository.findAllByCommonTrue().stream().map(Category::getName).collect(Collectors.toSet());
     }
+
+    @Override
+    public List<Category> getBySurvey(Long id) {
+        return categoryRepository.findAllBySurvey(surveyRepository.findById(id).orElseThrow(NotFoundException::new));
+    }
+
+    @Override
+    public Category get(Long categoryId) {
+        return categoryRepository.findById(categoryId).orElseThrow(NotFoundException::new);
+    }
 }

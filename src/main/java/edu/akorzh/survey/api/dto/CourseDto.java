@@ -14,12 +14,28 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GroupSubjectTeacherDto {
+public class CourseDto {
+
+    private Long id;
+
+    private Long groupId;
+
+    private Long subjectId;
+
+    private Long teacherId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate since;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate till;
+
+    private Long hours;
+
+    private TeacherDto teacher;
+
+    private SubjectDto subject;
+
+    private GroupDto group;
 
 }

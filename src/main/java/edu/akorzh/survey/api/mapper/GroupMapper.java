@@ -15,6 +15,7 @@ public class GroupMapper {
                 .name(group.getName())
                 .year(group.getYear())
                 .guid(group.getGuid())
+                .universityId(group.getUniversity().getId())
                 .build();
     }
 

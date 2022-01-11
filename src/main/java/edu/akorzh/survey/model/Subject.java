@@ -21,9 +21,6 @@ public class Subject extends AbstractEntity<Long> {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "hours")
-    private String hours;
-
     @Column(name = "rate_type")
     @Enumerated(value = EnumType.STRING)
     private RatingType ratingType;
@@ -33,6 +30,6 @@ public class Subject extends AbstractEntity<Long> {
     private University university;
 
     @OneToMany(mappedBy = "subject", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<GroupSubjectTeacherLink> groupSubjectTeacherLinks = new HashSet<>(0);
+    private Set<Course> courses = new HashSet<>(0);
 
 }

@@ -9,8 +9,10 @@ public class QuestionMapper {
 
     public QuestionDto to(Question question) {
         return QuestionDto.builder()
+                .id(question.getId())
                 .type(question.getType())
                 .name(question.getName())
+                .categoryId(question.getCategory().getId())
                 .build();
     }
 

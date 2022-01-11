@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @PostMapping("/")
+    @PostMapping("/signup")
     public UserDto register(@Validated @RequestBody UserDto userDto) {
         final User user = userMapper.to(userDto);
         userService.register(user);

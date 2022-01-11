@@ -19,4 +19,6 @@ public class GroupDto {
 
     private String year;
 
+    private Long universityId;
+
 }

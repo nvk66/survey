@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -33,5 +34,14 @@ public class CategoryController {
         return categoryService.findAllPublic();
     }
 
+    @GetMapping("/survey/{surveyId}/")
+    public List<CategoryDto> getCategories(@PathVariable(value = "surveyId") Long surveyId) {
+        return categoryService.getBySurvey(surveyId).stream().map(categoryMapper::to).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{categoryId}/")
+    public CategoryDto get(@PathVariable(value = "categoryId") Long categoryId) {
+        return categoryMapper.to(categoryService.get(categoryId));
+    }
 
 }

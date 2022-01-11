@@ -28,7 +28,7 @@ public class AnswerMapper {
         return Answer.builder()
                 .value(answer.getValue())
                 .text(answer.getText())
-                .question(questionRepository.findById(answer.getId()).orElseThrow(NotFoundException::new))
+                .question(questionRepository.findById(answer.getQuestionId()).orElseThrow(NotFoundException::new))
                 .build();
     }
 

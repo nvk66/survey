@@ -1,5 +1,6 @@
 package edu.akorzh.survey.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.akorzh.survey.common.SurveyType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class SurveyDto {
 
     private String name;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate createdDate;
 
     private SurveyType type;
