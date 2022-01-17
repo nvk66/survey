@@ -35,6 +35,13 @@ public class User extends AbstractEntity<Long> {
     @Column(name = "patronymic")
     private String patronymic;
 
+    @ManyToOne
+    @JoinColumn(name = "university_id")
+    private University university;
+
+    @Column(name = "confirmed")
+    private Boolean confirmed = Boolean.FALSE;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",

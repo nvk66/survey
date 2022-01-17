@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Log4j2
@@ -21,6 +22,7 @@ public class GroupController {
     private final GroupService groupService;
 
     @PostMapping("/{universityId}/")
+    @RolesAllowed({"ROLE_UNIVERSITY_ADMINISTRATOR", "ROLE_TEACHER"})
     public GroupDto add(@PathVariable(value = "universityId") Long universityId,
                         @Validated @RequestBody GroupDto groupDto) {
         final Group group = groupService.add(groupMapper.to(groupDto), universityId);
@@ -28,6 +30,7 @@ public class GroupController {
     }
 
     @GetMapping("/{universityId}/")
+    @RolesAllowed("ROLE_USER")
     public List<GroupDto> getAllByUniversity(@PathVariable(value = "universityId") Long universityId) {
         return groupMapper.to(groupService.getAllByUniversity(universityId));
     }

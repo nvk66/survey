@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Log4j2
@@ -25,6 +26,7 @@ public class AnswerController {
 
     @PostMapping("/survey/{surveyId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RolesAllowed("ROLE_USER")
     public void submitAnswer(@PathVariable(value = "surveyId") Long surveyId,
                              @Validated @RequestBody List<AnswerDto> answerDto) {
         surveyService.get(surveyId);

@@ -31,7 +31,6 @@ public class TeacherServiceImpl implements TeacherService {
         if (teacherRepository.findByUser(user) != null) {
             throw new DuplicateException();
         }
-        teacher.setUniversity(university);
         teacher.setUser(user);
         teacherRepository.save(teacher);
         return teacher;

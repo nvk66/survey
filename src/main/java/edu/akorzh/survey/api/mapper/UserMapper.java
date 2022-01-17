@@ -12,6 +12,7 @@ public class UserMapper {
 
     private final RoleMapper roleMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UniversityMapper universityMapper;
 
     public UserDto to(User user) {
         return UserDto.builder()
@@ -21,6 +22,8 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .patronymic(user.getPatronymic())
                 .id(user.getId())
+                .confirmed(user.getConfirmed())
+                .university(universityMapper.to(user.getUniversity()))
                 .roles(roleMapper.to(user.getRoles()))
                 .build();
     }

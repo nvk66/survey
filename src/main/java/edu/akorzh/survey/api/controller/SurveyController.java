@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,7 @@ public class SurveyController {
     private final ResultMapper resultMapper;
 
     @PostMapping("/")
+    @RolesAllowed("ROLE_USER")
     public SurveyDto add(@Validated @RequestBody SurveyDto surveyDto,
                          Authentication authentication) {
         final Survey survey = surveyService.add(surveyMapper.to(surveyDto), authentication.getName());
@@ -35,11 +37,13 @@ public class SurveyController {
     }
 
     @GetMapping("/{id}")
+    @RolesAllowed("ROLE_USER")
     public SurveyDto get(@PathVariable(value = "id") Long surveyId) {
         return surveyMapper.to(surveyService.get(surveyId));
     }
 
     @GetMapping("/result/{id}")
+    @RolesAllowed("ROLE_UNIVERSITY_ADMINISTRATOR")
     public List<ResultDto> getResult(@PathVariable(value = "id") Long surveyId) {
         return surveyService.result(surveyId).stream().map(resultMapper::to).collect(Collectors.toList());
     }

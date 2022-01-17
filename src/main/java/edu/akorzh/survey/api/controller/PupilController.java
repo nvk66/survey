@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
+
 @Log4j2
 @RequiredArgsConstructor
 @RestController
@@ -20,6 +22,7 @@ public class PupilController {
     private final PupilService pupilService;
 
     @PostMapping("/{groupId}/")
+    @RolesAllowed("ROLE_USER")
     public PupilDto add(@PathVariable(value = "groupId") Long groupId,
                         @Validated @RequestBody PupilDto pupilDto, Authentication authentication) {
         pupilDto.setSubmitted(false);

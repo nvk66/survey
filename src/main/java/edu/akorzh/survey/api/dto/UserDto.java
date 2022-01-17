@@ -29,6 +29,10 @@ public class UserDto {
 
     private String patronymic;
 
+    private Boolean confirmed;
+
+    private UniversityDto university;
+
     private List<RoleDto> roles;
 
 }

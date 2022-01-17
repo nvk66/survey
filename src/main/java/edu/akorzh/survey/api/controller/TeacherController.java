@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping("/{universityId}/")
+    @RolesAllowed("ROLE_USER")
     public TeacherDto add(@PathVariable(value = "universityId") Long universityId,
                           @Validated @RequestBody TeacherDto teacherDto, Authentication authentication) {
         log.info("Adding teacher {} and {}", universityId, teacherDto);

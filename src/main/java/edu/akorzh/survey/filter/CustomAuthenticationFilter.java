@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.akorzh.survey.api.dto.LoginDto;
+import edu.akorzh.survey.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,10 +29,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Log4j2
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final AuthenticationManager authenticationManager;
     private final ObjectMapper objectMapper;
+    private final UserService userService;
 
-    private final String secretKey = "secret";
+    private static final String SECRET_KEY = "secret";
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
@@ -62,7 +65,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                             FilterChain chain,
                                             Authentication authentication) throws IOException {
         User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256(secretKey.getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
@@ -72,6 +75,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                         .stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
+                .withClaim("university", userService.getUser(user.getUsername()).getUniversity().getId())
                 .sign(algorithm);
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())

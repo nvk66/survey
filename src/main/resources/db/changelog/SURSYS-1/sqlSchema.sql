@@ -204,3 +204,12 @@ VALUES ('ROLE_UNIVERSITY_ADMINISTRATOR'),
        ('ROLE_ADMINISTRATOR'),
        ('ROLE_USER');
 
+--changeset akorzh:insert default roles1
+INSERT INTO roles (name)
+VALUES ('ROLE_TEACHER'),
+       ('ROLE_PUPIL');
+
+ALTER TABLE users ADD COLUMN university_id int8;
+ALTER TABLE users ADD CONSTRAINT user_university foreign key (university_id) references university (id);
+ALTER TABLE teacher DROP COLUMN university_id;
+

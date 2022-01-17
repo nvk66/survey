@@ -36,6 +36,11 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    public University getById(Long id) {
+        return universityRepository.findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    @Override
     public University get(String guid) {
         return universityRepository.findByGuid(guid).orElseThrow(NotFoundException::new);
     }

@@ -10,5 +10,7 @@ public interface UniversityService {
 
     List<University> get();
 
+    University getById(Long id);
+
     University get(String guid);
 }

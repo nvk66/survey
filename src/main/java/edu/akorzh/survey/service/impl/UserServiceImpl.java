@@ -4,8 +4,11 @@ import edu.akorzh.survey.common.UserRoles;
 import edu.akorzh.survey.exception.DuplicateException;
 import edu.akorzh.survey.exception.NotFoundException;
 import edu.akorzh.survey.model.Role;
+import edu.akorzh.survey.model.University;
 import edu.akorzh.survey.model.User;
+import edu.akorzh.survey.repository.PupilRepository;
 import edu.akorzh.survey.repository.RoleRepository;
+import edu.akorzh.survey.repository.TeacherRepository;
 import edu.akorzh.survey.repository.UserRepository;
 import edu.akorzh.survey.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Log4j2
@@ -28,6 +32,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PupilRepository pupilRepository;
+    private final TeacherRepository teacherRepository;
 
     @Override
     @Transactional
@@ -47,7 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public void register(User user) {
-        log.info("!!! {}", user);
+        user.setConfirmed(false);
         if (userRepository.findUserByLogin(user.getLogin()).isPresent()) {
             throw new DuplicateException();
         }
@@ -58,10 +64,39 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
-    private Set<Role> getDefaultRoles() {
-        return Set.of(roleRepository.findByName(UserRoles.ROLE_USER).orElseThrow(NotFoundException::new));
+    @Override
+    public void confirm(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        if (pupilRepository.findByUser(user) != null) {
+            user.getRoles().add(getRole(UserRoles.ROLE_PUPIL));
+        }
+        if (teacherRepository.findByUser(user) != null) {
+            user.getRoles().add(getRole(UserRoles.ROLE_TEACHER));
+        }
+        userRepository.save(user);
     }
 
+    @Override
+    public void confirmAll() {
 
+    }
 
+    @Override
+    public User getUser(String login) {
+        return userRepository.findUserByLogin(login).orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    public List<User> getUsers(String userName) {
+        User user = userRepository.findUserByLogin(userName).orElseThrow(NotFoundException::new);
+        return userRepository.findUsersByUniversityAndConfirmedFalse(user.getUniversity());
+    }
+
+    private Role getRole(UserRoles role) {
+        return roleRepository.findByName(role).orElseThrow(NotFoundException::new);
+    }
+
+    private Set<Role> getDefaultRoles() {
+        return Set.of(getRole(UserRoles.ROLE_USER));
+    }
 }

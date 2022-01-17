@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
+
 @Log4j2
 @RequiredArgsConstructor
 @RestController
@@ -24,6 +26,7 @@ public class CourseController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RolesAllowed({"ROLE_UNIVERSITY_ADMINISTRATOR", "ROLE_TEACHER"})
     public void addSubjectToGroup(@Validated @RequestBody CourseDto courseDto) {
         subjectService.addSubjectToGroup(courseDto.getGroupId(), courseDto.getSubjectId(),
                 courseDto.getTeacherId(), Course.builder()

@@ -33,10 +33,6 @@ public class Teacher extends AbstractEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "university_id")
-    private University university;
-
     @OneToMany(mappedBy = "teacher", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Course> courses = new HashSet<>(0);
 
