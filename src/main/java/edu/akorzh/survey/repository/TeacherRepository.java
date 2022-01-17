@@ -5,6 +5,8 @@ import edu.akorzh.survey.model.University;
 import edu.akorzh.survey.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,5 +14,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, JpaSpec
 
     Teacher findByUser(User user);
 
-    List<Teacher> findAllByUniversity(University university);
+    @Query(value = "SELECT t FROM Teacher t " +
+            "LEFT OUTER JOIN FETCH t.user u " +
+            "LEFT OUTER JOIN FETCH u.university uni WHERE uni = :university")
+    List<Teacher> findAllByUniversity(@Param("university") University university);
 }

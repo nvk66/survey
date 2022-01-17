@@ -10,16 +10,29 @@ create sequence if not exists hibernate_sequence
 -- rollback drop sequence hibernate_sequence;
 --comment: Добавлен hibernate_sequence
 
+--changeset akorzh:university
+create table if not exists university
+(
+    id   int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
+    name varchar(256)                                         not null unique,
+    guid varchar(64)                                          not null unique
+);
+--rollback drop table university;
+--comment: Создана таблица university
+
 --changeset akorzh:user1
 create table if not exists users
 (
-    id         int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
-    login      varchar(64)                                          not null unique,
-    email      varchar(64)                                          not null unique,
-    password   varchar(256)                                         not null,
-    first_name varchar(64)                                          not null,
-    last_name  varchar(64)                                          not null,
-    patronymic varchar(64)
+    id            int8         not null primary key unique default nextval('hibernate_sequence'::regclass),
+    login         varchar(64)  not null unique,
+    email         varchar(64)  not null unique,
+    password      varchar(256) not null,
+    first_name    varchar(64)  not null,
+    last_name     varchar(64)  not null,
+    patronymic    varchar(64),
+    university_id int8         NOT NULL,
+    confirmed     boolean      NOT NULL                    DEFAULT FALSE,
+    constraint user_university foreign key (university_id) references university (id)
 );
 --rollback drop table users;
 --comment: Создана таблица users
@@ -44,16 +57,6 @@ create table if not exists user_roles
 );
 --rollback drop table user_roles;
 --comment: Создана таблица user_roles
-
---changeset akorzh:university
-create table if not exists university
-(
-    id   int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
-    name varchar(256)                                         not null unique,
-    guid varchar(64)                                          not null unique
-);
---rollback drop table university;
---comment: Создана таблица university
 
 --changeset akorzh:groups
 create table if not exists groups
@@ -101,13 +104,11 @@ create table if not exists pupil
 create table if not exists teacher
 (
     id            int8        not null default nextval('hibernate_sequence'::regclass) primary key unique,
-    university_id int8        not null,
     user_id       int8        not null,
     grade         varchar(64) not null,
     teaching_date timestamp   not null,
     submitted     boolean     not null default false,
-    constraint teacher_user_ibfk_1 foreign key (user_id) references users (id),
-    constraint teacher_university_ibfk_1 foreign key (university_id) references university (id)
+    constraint teacher_user_ibfk_1 foreign key (user_id) references users (id)
 );
 --rollback drop table teacher;
 --comment: Создана таблица teacher
@@ -148,7 +149,7 @@ create table if not exists survey
 --changeset akorzh:survey_permission
 create table if not exists survey_permission
 (
-    survey_id                int8 not null,
+    survey_id int8 not null,
     course_id int8 not null,
     constraint survey_permission_ibfk_1 foreign key (survey_id) references survey (id),
     constraint survey_permission_ibfk_2 foreign key (course_id) references course (id)
@@ -202,14 +203,6 @@ create table if not exists answer
 INSERT INTO roles (name)
 VALUES ('ROLE_UNIVERSITY_ADMINISTRATOR'),
        ('ROLE_ADMINISTRATOR'),
-       ('ROLE_USER');
-
---changeset akorzh:insert default roles1
-INSERT INTO roles (name)
-VALUES ('ROLE_TEACHER'),
+       ('ROLE_USER'),
+       ('ROLE_TEACHER'),
        ('ROLE_PUPIL');
-
-ALTER TABLE users ADD COLUMN university_id int8;
-ALTER TABLE users ADD CONSTRAINT user_university foreign key (university_id) references university (id);
-ALTER TABLE teacher DROP COLUMN university_id;
-

@@ -6,13 +6,12 @@ import edu.akorzh.survey.exception.NotFoundException;
 import edu.akorzh.survey.model.Role;
 import edu.akorzh.survey.model.University;
 import edu.akorzh.survey.model.User;
-import edu.akorzh.survey.repository.PupilRepository;
-import edu.akorzh.survey.repository.RoleRepository;
-import edu.akorzh.survey.repository.TeacherRepository;
-import edu.akorzh.survey.repository.UserRepository;
+import edu.akorzh.survey.repository.*;
 import edu.akorzh.survey.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleRepository roleRepository;
     private final PupilRepository pupilRepository;
     private final TeacherRepository teacherRepository;
+    private final UniversityRepository universityRepository;
 
     @Override
     @Transactional
@@ -52,7 +52,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional
     @Override
-    public void register(User user) {
+    public void register(User user, Long id) {
+        University university = universityRepository.findById(id).orElseThrow(NotFoundException::new);
+        user.setUniversity(university);
         user.setConfirmed(false);
         if (userRepository.findUserByLogin(user.getLogin()).isPresent()) {
             throw new DuplicateException();
@@ -77,8 +79,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void confirmAll() {
-
+    public void confirmAll(Authentication authentication) {
+        User user = userRepository.findUserByLogin(authentication.getName()).orElseThrow(NotFoundException::new);
+        List<User> users = userRepository.findUserByUniversityAndConfirmedFalse(user.getUniversity());
+        users.forEach(u -> confirm(u.getId()));
     }
 
     @Override
@@ -87,9 +91,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getUsers(String userName) {
+    public List<User> getUsers(String userName, Pageable pageable) {
         User user = userRepository.findUserByLogin(userName).orElseThrow(NotFoundException::new);
-        return userRepository.findUsersByUniversityAndConfirmedFalse(user.getUniversity());
+        return userRepository.findUsersByUniversityAndConfirmedFalse(user.getUniversity(), pageable);
     }
 
     private Role getRole(UserRoles role) {

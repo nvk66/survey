@@ -2,6 +2,7 @@ package edu.akorzh.survey.repository;
 
 import edu.akorzh.survey.model.University;
 import edu.akorzh.survey.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -14,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     Optional<User> findUserByEmail(String login);
 
-    List<User> findUsersByUniversityAndConfirmedFalse(University university);
+    List<User> findUsersByUniversityAndConfirmedFalse(University university, Pageable pageable);
+
+    List<User> findUserByUniversityAndConfirmedFalse(University university);
 
 }

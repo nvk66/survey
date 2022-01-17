@@ -69,7 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(LOGIN_URL).permitAll();
         http.authorizeRequests()
                 .antMatchers("/api/users/**")
-                .hasRole(UserRoles.ROLE_UNIVERSITY_ADMINISTRATOR.name());
+                .hasRole("UNIVERSITY_ADMINISTRATOR");
         http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), CustomAuthenticationFilter.class);
