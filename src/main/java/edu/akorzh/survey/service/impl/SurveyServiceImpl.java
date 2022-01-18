@@ -1,15 +1,13 @@
 package edu.akorzh.survey.service.impl;
 
+import edu.akorzh.survey.common.SurveyUserStatus;
 import edu.akorzh.survey.exception.NotFoundException;
-import edu.akorzh.survey.model.Question;
-import edu.akorzh.survey.model.Survey;
-import edu.akorzh.survey.model.User;
-import edu.akorzh.survey.repository.QuestionRepository;
-import edu.akorzh.survey.repository.SurveyRepository;
-import edu.akorzh.survey.repository.UserRepository;
+import edu.akorzh.survey.model.*;
+import edu.akorzh.survey.repository.*;
 import edu.akorzh.survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +19,10 @@ import java.util.List;
 public class SurveyServiceImpl implements SurveyService {
 
     private final UserRepository userRepository;
+    private final PupilRepository pupilRepository;
     private final SurveyRepository surveyRepository;
     private final QuestionRepository questionRepository;
+    private final PermissionRepository permissionRepository;
 
     @Override
     @Transactional
@@ -42,6 +42,20 @@ public class SurveyServiceImpl implements SurveyService {
     @Transactional
     public Survey get(Long surveyId) {
         return surveyRepository.findById(surveyId).orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    public List<Permission> get(SurveyUserStatus status, Authentication authentication) {
+        User user = userRepository.findUserByLogin(authentication.getName()).orElseThrow(NotFoundException::new);
+
+        Pupil pupil = pupilRepository.findByUser(user);
+        if (pupil == null) {
+            throw new NotFoundException();
+        }
+
+        return permissionRepository.getPermissions(pupil.getGroup());
+
+//        return surveyRepository.getSurveys(pupil.getGroup());
     }
 
     @Override

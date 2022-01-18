@@ -2,8 +2,11 @@ package edu.akorzh.survey.api.controller;
 
 import edu.akorzh.survey.api.dto.ResultDto;
 import edu.akorzh.survey.api.dto.SurveyDto;
+import edu.akorzh.survey.api.dto.SurveyInfoDto;
 import edu.akorzh.survey.api.mapper.ResultMapper;
+import edu.akorzh.survey.api.mapper.SurveyInfoDtoMapper;
 import edu.akorzh.survey.api.mapper.SurveyMapper;
+import edu.akorzh.survey.common.SurveyUserStatus;
 import edu.akorzh.survey.model.Survey;
 import edu.akorzh.survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,8 @@ public class SurveyController {
 
     private final ResultMapper resultMapper;
 
+    private final SurveyInfoDtoMapper surveyInfoDtoMapper;
+
     @PostMapping("/")
     @RolesAllowed("ROLE_USER")
     public SurveyDto add(@Validated @RequestBody SurveyDto surveyDto,
@@ -40,6 +45,16 @@ public class SurveyController {
     @RolesAllowed("ROLE_USER")
     public SurveyDto get(@PathVariable(value = "id") Long surveyId) {
         return surveyMapper.to(surveyService.get(surveyId));
+    }
+
+    @GetMapping("/{status}")
+    @RolesAllowed("ROLE_USER")
+    public List<SurveyInfoDto> get(@PathVariable(value = "status") SurveyUserStatus status,
+                                   Authentication authentication) {
+        return surveyService.get(status, authentication)
+                .stream()
+                .map(surveyInfoDtoMapper::to)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/result/{id}")

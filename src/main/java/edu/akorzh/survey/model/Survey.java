@@ -1,5 +1,6 @@
 package edu.akorzh.survey.model;
 
+import edu.akorzh.survey.common.SurveyAim;
 import edu.akorzh.survey.common.SurveyType;
 import lombok.*;
 
@@ -40,10 +41,13 @@ public class Survey extends AbstractEntity<Long> {
     @OneToMany(mappedBy = "survey")
     private Set<Category> categories = new HashSet<>(0);
 
-    @ManyToMany
-    @JoinTable(name = "survey_subject",
-            joinColumns = {@JoinColumn(name = "survey_id")},
-            inverseJoinColumns = {@JoinColumn(name = "course_id")})
-    private Set<Course> courses = new HashSet<>(0);
+    @OneToMany
+    private Set<Permission> permissions = new HashSet<>(0);
+
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "survey_subject",
+//            joinColumns = {@JoinColumn(name = "survey_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "course_id")})
+//    private Set<Course> courses = new HashSet<>(0);
 
 }

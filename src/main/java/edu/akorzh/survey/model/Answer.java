@@ -28,4 +28,8 @@ public class Answer extends AbstractEntity<Long> {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "permission_id")
+    private Permission permission;
 }

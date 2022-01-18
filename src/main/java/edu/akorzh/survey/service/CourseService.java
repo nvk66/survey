@@ -4,5 +4,5 @@ import edu.akorzh.survey.model.Course;
 
 public interface CourseService {
 
-    Course get(Long courseId);
+    Course get(Long permissionId);
 }

@@ -147,8 +147,9 @@ create table if not exists survey
 --comment: Создана таблица survey
 
 --changeset akorzh:survey_permission
-create table if not exists survey_permission
+create table if not exists permission
 (
+    id        int8 not null default nextval('hibernate_sequence'::regclass) primary key unique,
     survey_id int8 not null,
     course_id int8 not null,
     constraint survey_permission_ibfk_1 foreign key (survey_id) references survey (id),
@@ -188,13 +189,15 @@ create table if not exists question
 --changeset akorzh:answer
 create table if not exists answer
 (
-    id          int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
-    value       numeric(3),
-    text        varchar(264),
-    question_id int8                                                 not null,
-    user_id     int8                                                 not null,
+    id            int8 default nextval('hibernate_sequence'::regclass) not null primary key unique,
+    value         numeric(3),
+    text          varchar(264),
+    question_id   int8                                                 not null,
+    permission_id int8                                                 not null,
+    user_id       int8                                                 not null,
     constraint answer_question_ibfk_1 foreign key (question_id) references question (id),
-    constraint answer_person_ibfk_1 foreign key (user_id) references users (id)
+    constraint answer_person_ibfk_1 foreign key (user_id) references users (id),
+    constraint answer_permission_ibfk_1 foreign key (permission_id) references permission (id)
 );
 --rollback drop table answer;
 --comment: Создана таблица answer
