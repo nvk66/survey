@@ -2,6 +2,7 @@ package edu.akorzh.survey.repository;
 
 import edu.akorzh.survey.model.Group;
 import edu.akorzh.survey.model.Permission;
+import edu.akorzh.survey.model.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,16 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, J
             "LEFT OUTER JOIN FETCH c.subject sub " +
             "WHERE g = :group")
     List<Permission> getPermissions(@Param(value = "group") Group group);
+
+    @Query(value = "SELECT p FROM Permission p " +
+            "LEFT OUTER JOIN FETCH p.course c " +
+            "LEFT OUTER JOIN FETCH p.survey s " +
+            "LEFT OUTER JOIN FETCH c.group g " +
+            "LEFT OUTER JOIN FETCH c.teacher t " +
+            "LEFT OUTER JOIN FETCH c.subject sub " +
+            "WHERE t = :teacher")
+    List<Permission> getPermissionsByTeacher(@Param(value = "teacher") Teacher teacher);
+
+
+
 }

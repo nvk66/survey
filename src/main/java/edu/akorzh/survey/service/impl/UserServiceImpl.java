@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (teacherRepository.findByUser(user) != null) {
             user.getRoles().add(getRole(UserRoles.ROLE_TEACHER));
         }
+        user.getRoles().remove(getRole(UserRoles.ROLE_USER_NOT_CONFIRMED));
         userRepository.save(user);
     }
 
@@ -101,6 +102,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private Set<Role> getDefaultRoles() {
-        return Set.of(getRole(UserRoles.ROLE_USER));
+        return Set.of(getRole(UserRoles.ROLE_USER), getRole(UserRoles.ROLE_USER_NOT_CONFIRMED));
     }
 }

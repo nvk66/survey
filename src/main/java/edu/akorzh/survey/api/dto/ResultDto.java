@@ -20,6 +20,8 @@ public class ResultDto {
 
     private Long categoryId;
 
+    private String categoryName;
+
     private BigDecimal average;
 
     private List<String> answers;

@@ -47,7 +47,7 @@ public class SurveyController {
         return surveyMapper.to(surveyService.get(surveyId));
     }
 
-    @GetMapping("/{status}")
+    @GetMapping("/search/{status}/")
     @RolesAllowed("ROLE_USER")
     public List<SurveyInfoDto> get(@PathVariable(value = "status") SurveyUserStatus status,
                                    Authentication authentication) {
@@ -57,9 +57,19 @@ public class SurveyController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/result/{id}")
+    @GetMapping("/search/teacher/pre/")
+    @RolesAllowed("ROLE_TEACHER")
+    public List<SurveyInfoDto> getForTeacher(Authentication authentication) {
+        return surveyService.getForTeacher(authentication)
+                .stream()
+                .map(surveyInfoDtoMapper::to)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/result/{permissionId}")
     @RolesAllowed("ROLE_UNIVERSITY_ADMINISTRATOR")
-    public List<ResultDto> getResult(@PathVariable(value = "id") Long surveyId) {
-        return surveyService.result(surveyId).stream().map(resultMapper::to).collect(Collectors.toList());
+    public List<ResultDto> getResult(@PathVariable(value = "permissionId") Long permissionId,
+                                     Authentication authentication) {
+        return resultMapper.to(surveyService.result(permissionId, authentication));
     }
 }
