@@ -131,6 +131,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>
+                        edu.akorzh.survey.SurveyApplication
+                    </mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
