@@ -39,9 +39,4 @@ public class UniversityController {
         return universityMapper.to(universityService.getById(id));
     }
 
-//    @GetMapping("/{guid}")
-//    public UniversityDto get(@PathVariable(value = "guid") String guid) {
-//        return universityMapper.to(universityService.get(guid));
-//    }
-
 }

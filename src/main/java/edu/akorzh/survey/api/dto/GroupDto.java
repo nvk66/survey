@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GroupDto {
 
+    private Long id;
+
     private String name;
 
     private String guid;

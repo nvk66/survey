@@ -25,8 +25,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @Transactional
-    public Teacher add(Teacher teacher, Long universityId, String userName) {
-        University university = universityRepository.findById(universityId).orElseThrow(NotFoundException::new);
+    public Teacher add(Teacher teacher, String userName) {
         User user = userRepository.findUserByLogin(userName).orElseThrow(NotFoundException::new);
         if (teacherRepository.findByUser(user) != null) {
             throw new DuplicateException();

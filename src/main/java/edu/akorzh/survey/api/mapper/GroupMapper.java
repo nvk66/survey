@@ -12,6 +12,7 @@ public class GroupMapper {
 
     public GroupDto to(Group group) {
         return GroupDto.builder()
+                .id(group.getId())
                 .name(group.getName())
                 .year(group.getYear())
                 .guid(group.getGuid())

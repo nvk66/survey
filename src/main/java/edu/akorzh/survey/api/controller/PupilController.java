@@ -22,7 +22,6 @@ public class PupilController {
     private final PupilService pupilService;
 
     @PostMapping("/{groupId}/")
-    @RolesAllowed("ROLE_USER")
     public PupilDto add(@PathVariable(value = "groupId") Long groupId,
                         @Validated @RequestBody PupilDto pupilDto, Authentication authentication) {
         pupilDto.setSubmitted(false);

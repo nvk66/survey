@@ -23,15 +23,10 @@ public class TeacherController {
     private final TeacherMapper teacherMapper;
     private final TeacherService teacherService;
 
-    @PostMapping("/{universityId}/")
-    @RolesAllowed("ROLE_USER")
-    public TeacherDto add(@PathVariable(value = "universityId") Long universityId,
-                          @Validated @RequestBody TeacherDto teacherDto, Authentication authentication) {
-        log.info("Adding teacher {} and {}", universityId, teacherDto);
-        log.info("Adding teacher {} and {} and {}", universityId, teacherDto, authentication.getName());
+    @PostMapping("/")
+    public TeacherDto add(@Validated @RequestBody TeacherDto teacherDto, Authentication authentication) {
         teacherDto.setSubmitted(false);
-        final Teacher teacher =
-                teacherService.add(teacherMapper.to(teacherDto), universityId, authentication.getName());
+        final Teacher teacher = teacherService.add(teacherMapper.to(teacherDto), authentication.getName());
         return teacherMapper.to(teacher);
     }
 

@@ -18,7 +18,7 @@ public class TeacherDto {
 
     private Grade grade;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate teachingDate;
 
     @JsonIgnore
