@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void confirm(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         if (pupilRepository.findByUser(user) != null) {
@@ -76,6 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.getRoles().add(getRole(UserRoles.ROLE_TEACHER));
         }
         user.getRoles().remove(getRole(UserRoles.ROLE_USER_NOT_CONFIRMED));
+        user.setConfirmed(true);
         userRepository.save(user);
     }
 
